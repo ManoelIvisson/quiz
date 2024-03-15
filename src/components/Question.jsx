@@ -13,22 +13,19 @@ const Question = () => {
     dispatch({type: "CHECK_ANSWER", payload: {answer: currentQuestion.answer, option}})
   }
 
-  function removeWrongAnswer() {
-    
-  }
-
   return (
     <div id='question'>
       <p>Pergunta {quizState.currentQuestion + 1} de {quizState.questions.length}</p>
       <h2>{currentQuestion.question}</h2>
       <div id="options-container">
         {currentQuestion.options.map((option) => 
-          <Option option={option} key={option} answer={currentQuestion.answer} selectOption={() => onSelectAnswer(option)} />
+          <Option option={option} key={option} answer={currentQuestion.answer} selectOption={() => onSelectAnswer(option)} hide={quizState.optionHide == option ? "hide" : null} />
         )}
       </div>
       {quizState.answerSelected ? 
         <button onClick={() => dispatch({type: "CHANGE_QUESTION"})}>Continuar</button> : 
-        <button onClick={() => dispatch({type: "REMOVE_OPTION", payload: {question: currentQuestion}})}>Exluir uma</button>
+        (quizState.optionHide == null && (
+        <button onClick={() => dispatch({type: "REMOVE_OPTION"})}>Exluir uma</button>))
       }
     </div>
   )

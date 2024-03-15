@@ -8,7 +8,8 @@ const initialState = {
     questions,
     currentQuestion: 0,
     score: 0,
-    answerSelected: false
+    answerSelected: false,
+    optionHide: null
 }
 
 const quizReducer = (state, action) => {
@@ -41,7 +42,8 @@ const quizReducer = (state, action) => {
                 ...state,
                 currentQuestion: nextQuestion,
                 gameStage: endGame ? STAGES[2] : state.gameStage,
-                answerSelected: false
+                answerSelected: false,
+                optionHide: null
             }
 
         case "NEW_GAME":
@@ -61,6 +63,26 @@ const quizReducer = (state, action) => {
                 score: state.score + correctAnswer,
                 answerSelected: option
             }
+
+        case "REMOVE_OPTION":
+            let question = state.questions[state.currentQuestion]
+            let options = question.options
+
+            let optionHide
+
+            let wrongOption = options.filter(option => option != question.answer)
+            wrongOption = wrongOption.splice(Math.floor(Math.random() * 3), 1)
+            console.log(wrongOption)
+
+            optionHide = wrongOption
+
+            console.log("Tomé" + optionHide)
+
+            return {
+                ...state,
+                optionHide
+            }
+
 
         default:
             return state
